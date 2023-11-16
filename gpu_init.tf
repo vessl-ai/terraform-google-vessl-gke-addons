@@ -176,13 +176,15 @@ resource "kubernetes_config_map" "entrypoint" {
       apt-get update
       apt-get install -y nvidia-container-toolkit
 
-      # containerd config 업데이트 후 확인
+      echo "Updating containerd default runtime to nvidia..."
       nvidia-ctk runtime configure --runtime=containerd
+      sed -i 's/default_runtime_name = "runc"/default_runtime_name = "nvidia"/' /etc/containerd/config.toml
+      sed -i 's/#accept-nvidia-visible-devices-as-volume-mounts = false/accept-nvidia-visible-devices-as-volume-mounts = true/' /etc/containerd/config.toml
       cat /etc/containerd/config.toml
       EOF
+
+      echo "Restarting containerd..."
       systemctl restart containerd
-      systemctl status --no-pager containerd
-      echo Done
     EOT
   }
 }
