@@ -1,10 +1,25 @@
+variable "external_dns" {
+  type = object({
+    gcp_project_id           = string
+    cluster_name             = string
+    namespace                = optional(string, "kube-system")
+    version                  = optional(string, "1.14.3")
+    helm_values              = optional(map(any), {})
+    k8s_service_account_name = optional(string, "external-dns")
+    gcp_service_account_name = optional(string, "external-dns")
+    sources                  = optional(list(string), ["service"])
+    domain_filters           = optional(list(string), [])
+  })
+  default = null
+}
+
 variable "ingress_nginx" {
   type = object({
     namespace           = optional(string, "kube-system")
     version             = optional(string, "4.9.1")
     service_annotations = optional(map(string), {})
     ssl_termination     = optional(bool, true)
-    extra_chart_values  = optional(map(string), {})
+    helm_values         = optional(map(any), {})
   })
   default = null
 }
