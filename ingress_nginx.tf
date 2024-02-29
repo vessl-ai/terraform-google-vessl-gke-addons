@@ -34,5 +34,5 @@ resource "helm_release" "ingress_nginx" {
   name       = "ingress-nginx"
   version    = var.ingress_nginx.version
   namespace  = var.ingress_nginx.namespace
-  values     = merge(local.ingress_nginx_helm_values, var.ingress_nginx.extra_chart_values)
+  values     = [yamlencode(merge(local.ingress_nginx_helm_values, var.ingress_nginx.extra_chart_values))]
 }
