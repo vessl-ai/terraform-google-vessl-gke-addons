@@ -18,7 +18,6 @@ variable "ingress_nginx" {
     namespace           = optional(string, "kube-system")
     version             = optional(string, "4.9.1")
     service_annotations = optional(map(string), {})
-    ssl_termination     = optional(bool, true)
     helm_values         = optional(map(any), {})
   })
   default = null

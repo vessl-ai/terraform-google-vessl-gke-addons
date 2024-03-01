@@ -3,10 +3,6 @@ locals {
   ingress_nginx_helm_values = {
     controller = {
       service = {
-        targetPorts = {
-          http  = "http",
-          https = try(var.ingress_nginx.ssl_termination, false) ? "http" : "https",
-        },
         annotations = var.ingress_nginx.service_annotations,
       }
       admissionWebhooks = {
