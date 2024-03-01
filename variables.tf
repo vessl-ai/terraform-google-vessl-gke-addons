@@ -23,6 +23,15 @@ variable "ingress_nginx" {
   default = null
 }
 
+variable "cert_manager" {
+  type = object({
+    namespace   = optional(string, "kube-system")
+    version     = optional(string, "v1.14.3")
+    helm_values = optional(map(any), {})
+  })
+  default = null
+}
+
 variable "node_affinity" {
   type = list(object({
     key      = string
