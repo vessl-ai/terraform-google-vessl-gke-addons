@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }
+  }
+}
+
 locals {
   node_affinity = {
     requiredDuringSchedulingIgnoredDuringExecution = {
