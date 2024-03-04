@@ -5,7 +5,7 @@ locals {
       nodeAffinity = local.node_affinity
     }
     tolerations               = local.tolerations
-    enableCertificateOwnerRef = true
+    enableCertificateOwnerRef = "true"
   }
 }
 
