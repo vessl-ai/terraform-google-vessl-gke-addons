@@ -19,6 +19,7 @@ variable "ingress_nginx" {
     version             = optional(string, "4.9.1")
     service_annotations = optional(map(string), {})
     helm_values         = optional(map(any), {})
+    ssl_secret_name     = optional(string)
   })
   default = null
 }
