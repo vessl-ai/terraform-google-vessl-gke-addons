@@ -9,7 +9,7 @@ module "external_dns" {
   gcp_service_account_name = var.external_dns.gcp_service_account_name
   k8s_service_account_name = var.external_dns.k8s_service_account_name
   helm_values              = var.external_dns.helm_values
-  domain_filters           = var.external_dns.domain_filters
+  domain                   = var.external_dns.domain
   sources                  = var.external_dns.sources
   tolerations              = local.tolerations
   node_affinity            = local.node_affinity

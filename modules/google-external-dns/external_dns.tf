@@ -12,7 +12,7 @@ locals {
       }
     }
     sources      = var.sources
-    domainFilter = var.domain_filters
+    domainFilter = [var.domain]
     affinity = {
       nodeAffinity = var.node_affinity
     }
@@ -30,4 +30,22 @@ resource "helm_release" "external_dns" {
   create_namespace = var.k8s_create_namespace
   namespace        = var.k8s_namespace
   values           = [yamlencode(merge(local.external_dns_helm_values, var.helm_values))]
+}
+
+resource "kubernetes_service" "tcp" {
+  metadata {
+    name      = "tcp"
+    namespace = var.k8s_namespace
+    annotations = {
+      "external-dns.alpha.kubernetes.io/hostname"       = "tcp.${var.domain}"
+      "external-dns.alpha.kubernetes.io/endpoints-type" = "NodeExternalIP"
+    }
+  }
+  spec {
+    cluster_ip = "None"
+    selector = {
+      "app.kubernetes.io/instance"  = "ingress-nginx"
+      "app.kubernetes.io/component" = "controller"
+    }
+  }
 }

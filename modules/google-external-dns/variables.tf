@@ -62,9 +62,9 @@ variable "gcp_service_account_name" {
   description = "GCP service account name to access Cloud DNS"
 }
 
-variable "domain_filters" {
-  type        = list(string)
-  description = "List of domain filters to be used by external-dns"
+variable "domain" {
+  type        = string
+  description = "Domain to be used by external-dns"
 }
 
 variable "sources" {

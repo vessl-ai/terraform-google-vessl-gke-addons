@@ -8,7 +8,7 @@ variable "external_dns" {
     k8s_service_account_name = optional(string, "external-dns")
     gcp_service_account_name = optional(string, "external-dns")
     sources                  = optional(list(string), ["service"])
-    domain_filters           = optional(list(string), [])
+    domain                   = string
   })
   default = null
 }
