@@ -26,9 +26,11 @@ variable "ingress_nginx" {
 
 variable "cert_manager" {
   type = object({
-    namespace   = optional(string, "kube-system")
-    version     = optional(string, "v1.14.3")
-    helm_values = optional(map(any), {})
+    gcp_project_id = string
+    namespace      = optional(string, "kube-system")
+    version        = optional(string, "v1.14.3")
+    helm_values    = optional(map(any), {})
+    domain         = string
   })
   default = null
 }
