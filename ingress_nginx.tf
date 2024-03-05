@@ -14,8 +14,8 @@ locals {
           )
         }
       }
-      extraArgs = var.ingress_nginx.ssl_secret_name != null ? {
-        default-ssl-certificate = "${var.ingress_nginx.namespace}/${var.ingress_nginx.ssl_secret_name}"
+      extraArgs = var.cert_manager != null ? {
+        default-ssl-certificate = "${var.cert_manager.namespace}/${var.cert_manager.cert_secret_name}"
       } : {}
       affinity = {
         nodeAffinity = local.node_affinity

@@ -19,18 +19,18 @@ variable "ingress_nginx" {
     version             = optional(string, "4.9.1")
     service_annotations = optional(map(string), {})
     helm_values         = optional(map(any), {})
-    ssl_secret_name     = optional(string)
   })
   default = null
 }
 
 variable "cert_manager" {
   type = object({
-    gcp_project_id = string
-    namespace      = optional(string, "kube-system")
-    version        = optional(string, "v1.14.3")
-    helm_values    = optional(map(any), {})
-    domain         = string
+    namespace        = optional(string, "kube-system")
+    version          = optional(string, "v1.14.3")
+    domain           = string
+    cert_email       = string
+    cert_secret_name = string
+    helm_values      = optional(map(any), {})
   })
   default = null
 }
