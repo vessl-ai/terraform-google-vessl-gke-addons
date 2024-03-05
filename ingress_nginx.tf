@@ -17,6 +17,14 @@ locals {
       extraArgs = var.cert_manager != null ? {
         default-ssl-certificate = "${var.cert_manager.namespace}/${var.cert_manager.cert_secret_name}"
       } : {}
+      minAvailable = 2
+      autoscaling = {
+        enabled                           = true
+        minReplicas                       = 2
+        maxReplicas                       = 11
+        targetCPUUtilizationPercentage    = 50
+        targetMemoryUtilizationPercentage = 50
+      }
       affinity = {
         nodeAffinity = local.node_affinity
       }

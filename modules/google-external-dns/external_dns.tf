@@ -39,6 +39,7 @@ resource "kubernetes_service" "tcp" {
     annotations = {
       "external-dns.alpha.kubernetes.io/hostname"       = "tcp.${var.domain}"
       "external-dns.alpha.kubernetes.io/endpoints-type" = "NodeExternalIP"
+      "cloud.google.com/neg"                            = jsonencode({ ingress = true })
     }
   }
   spec {
