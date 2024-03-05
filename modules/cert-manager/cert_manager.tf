@@ -14,6 +14,10 @@ locals {
       create = var.k8s_create_service_account
       name   = var.k8s_service_account_name
     }
+    crds = {
+      enabled = true
+    }
+    installCRDs = true
     affinity = {
       nodeAffinity = var.node_affinity
     }
@@ -21,18 +25,7 @@ locals {
   }
 }
 
-data "kubectl_path_documents" "cert_manager_crds" {
-  pattern = "${path.module}/files/${var.helm_chart_version}.crds.yaml"
-}
-
-resource "kubectl_manifest" "cert_manager_crds" {
-  count     = length(data.kubectl_path_documents.cert_manager_crds.documents)
-  yaml_body = element(data.kubectl_path_documents.cert_manager_crds.documents, count.index)
-}
-
 resource "helm_release" "cert_manager" {
-  depends_on = [kubectl_manifest.cert_manager_crds]
-
   repository = var.helm_repo_url
   chart      = var.helm_chart_name
   name       = var.helm_release_name
@@ -42,7 +35,7 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "kubectl_manifest" "cert_manager_issuer" {
-  depends_on = [kubectl_manifest.cert_manager_crds]
+  depends_on = [helm_release.cert_manager]
 
   yaml_body = <<YAML
 apiVersion: cert-manager.io/v1
