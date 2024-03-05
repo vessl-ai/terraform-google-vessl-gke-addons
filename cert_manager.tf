@@ -6,6 +6,10 @@ locals {
     }
     tolerations               = local.tolerations
     enableCertificateOwnerRef = true
+    serviceAccount = { // Share the same service account with external-dns
+      create = var.external_dns == null
+      name   = var.external_dns == null ? "" : var.external_dns.k8s_service_account_name
+    }
   }
 }
 
@@ -48,12 +52,47 @@ resource "kubernetes_manifest" "cert_manager_issuer" {
         }
         solvers = [
           {
-            http01 = {
-              ingress = {
-                class = "nginx"
+            dns01 = {
+              cloudDNS = {
+                project = var.cert_manager.gcp_project_id
               }
             }
           }
+        ]
+      }
+    }
+  }
+}
+
+resource "kubernetes_manifest" "certificate" {
+  count = var.cert_manager != null ? 1 : 0
+
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "Certificate"
+    metadata = {
+      name      = "oregon-dev-google-cluster-vssl-ai"
+      namespace = var.cert_manager.namespace
+    }
+    spec = {
+      secretName = "wildcard-cert"
+      issuerRef = {
+        kind = "ClusterIssuer"
+        name = "letsencrypt-prod"
+      }
+      dnsNames = [
+        "*.${var.cert_manager.domain}}",
+      ]
+      acme = {
+        config = [
+          {
+            dns01 = {
+              provider = "dns"
+            }
+            domains = [
+              "*.${var.cert_manager.domain}",
+            ]
+          },
         ]
       }
     }
