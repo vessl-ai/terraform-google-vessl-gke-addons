@@ -16,7 +16,7 @@ variable "external_dns" {
 variable "ingress_nginx" {
   type = object({
     namespace           = optional(string, "kube-system")
-    version             = optional(string, "4.9.1")
+    version             = optional(string, "4.10.0")
     service_annotations = optional(map(string), {})
     helm_values         = optional(map(any), {})
   })

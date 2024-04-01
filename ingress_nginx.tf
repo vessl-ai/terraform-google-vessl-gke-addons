@@ -23,6 +23,9 @@ locals {
           memory = "500Mi"
         }
       }
+      config = {
+        proxy-body-size = "1g"
+      }
       minAvailable = 2
       autoscaling = {
         enabled                           = true
