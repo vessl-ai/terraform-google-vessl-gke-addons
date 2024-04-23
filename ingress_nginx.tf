@@ -24,7 +24,8 @@ locals {
         }
       }
       config = {
-        proxy-body-size = "1g"
+        proxy-body-size     = "1g"
+        client-body-timeout = "5m"
       }
       minAvailable = 2
       autoscaling = {
